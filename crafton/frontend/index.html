@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crafton</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080808;--card:#0f0f13;--border:rgba(255,255,255,0.08);--input-bg:rgba(255,255,255,0.04);--input-border:rgba(255,255,255,0.1);--text:#e8e8e8;--muted:#666;--accent:#fff;--strong:#00e5ff;--sidebar-w:260px}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.pt{position:absolute;border-radius:50%;background:#fff;animation:drift linear infinite;opacity:0}
+@keyframes drift{0%{opacity:0;transform:translate(0,0)}10%{opacity:.35}90%{opacity:.35}100%{opacity:0;transform:translate(var(--dx),var(--dy))}}
+#authPage{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem}
+.logo-wrap{margin-bottom:1.5rem}
+.logo-wrap img{width:120px;height:120px;object-fit:contain;filter:invert(1);opacity:.9;animation:logoFloat 4s ease-in-out infinite}
+@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;width:100%;max-width:420px;padding:2.5rem 2.25rem;box-shadow:0 30px 80px rgba(0,0,0,0.8)}
+h1{font-family:'Bebas Neue';font-size:2.6rem;letter-spacing:.12em;text-align:center;margin-bottom:1.6rem}
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:2rem}
+.tab{flex:1;background:none;border:none;border-bottom:3px solid transparent;padding:.65rem 0;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.input-wrap{position:relative}
+input[type=text],input[type=password],input[type=file]{width:100%;padding:.85rem 1rem;background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;color:var(--text);
