@@ -20,9 +20,372 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .card{background:var(--card);border:1px solid var(--border);border-radius:20px;width:100%;max-width:420px;padding:2.5rem 2.25rem;box-shadow:0 30px 80px rgba(0,0,0,0.8)}
 h1{font-family:'Bebas Neue';font-size:2.6rem;letter-spacing:.12em;text-align:center;margin-bottom:1.6rem}
 .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:2rem}
-.tab{flex:1;background:none;border:none;border-bottom:3px solid transparent;padding:.65rem 0;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s}
+.tab{flex:1;background:none;border:none;border-bottom:3px solid transparent;padding:.65rem 0;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .field{margin-bottom:1rem}
 .field label{display:block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
 .input-wrap{position:relative}
-input[type=text],input[type=password],input[type=file]{width:100%;padding:.85rem 1rem;background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;color:var(--text);
+input[type=text],input[type=password],input[type=file]{width:100%;padding:.85rem 1rem;background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;color:var(--text);font-size:.95rem;outline:none}
+input:focus{border-color:rgba(255,255,255,0.3)}
+.char-count{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:.72rem;color:var(--muted)}
+.strength-wrap{margin-top:.5rem;display:flex;gap:4px}
+.strength-bar{flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,0.08)}
+.strength-bar.active{background:var(--strong)}
+.verify-wrap{margin-top:1rem;text-align:center;padding:.8rem;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.03)}
+.verify-btn{padding:.6rem 1.2rem;border:none;background:#fff;color:#000;border-radius:8px;cursor:pointer;font-weight:600}
+.verify-btn.verified{background:#22c55e;color:#fff}
+.vstatus{font-size:.75rem;margin-top:.3rem;color:var(--muted)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn{width:100%;padding:.9rem;background:#fff;color:#000;border:none;border-radius:10px;font-family:'Bebas Neue';font-size:1.15rem;letter-spacing:.15em;cursor:pointer;margin-top:.7rem}
+.hidden{display:none!important}
+#pageOverlay{position:fixed;inset:0;background:var(--bg);z-index:500;pointer-events:none;opacity:0;transition:opacity .35s}
+#pageOverlay.show{opacity:1;pointer-events:all}
+#dashPage{position:relative;z-index:2;min-height:100vh}
+#topBar{position:fixed;top:0;left:0;right:0;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;z-index:70;background:rgba(8,8,8,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+#hamburger{background:none;border:none;cursor:pointer;padding:.4rem;display:flex;flex-direction:column;gap:5px}
+.hb-line{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:transform .35s,opacity .25s}
+#hamburger.open .hb-line:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#hamburger.open .hb-line:nth-child(2){opacity:0}
+#hamburger.open .hb-line:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.topbar-logo{font-family:'Bebas Neue';font-size:1.3rem;letter-spacing:.2em;color:#fff;opacity:.7;position:absolute;left:50%;transform:translateX(-50%)}
+#profileBtn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#333,#1a1a1a);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:1.1rem;color:#fff}
+#profileDropdown{position:absolute;top:calc(100% + 10px);right:0;background:#111116;border:1px solid var(--border);border-radius:12px;min-width:160px;opacity:0;transform:translateY(-8px);pointer-events:none;transition:.2s;z-index:80}
+#profileDropdown.open{opacity:1;transform:translateY(0);pointer-events:all}
+.dd-item{padding:.8rem 1.1rem;font-size:.88rem;cursor:pointer}
+.dd-item:hover{background:rgba(255,255,255,0.06)}
+.dd-item.dd-logout{color:#ff4d4d;border-top:1px solid var(--border)}
+#sideBackdrop{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,0);pointer-events:none;transition:.3s}
+#sideBackdrop.show{background:rgba(0,0,0,0.55);pointer-events:all}
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:#0a0a0e;border-right:1px solid var(--border);z-index:60;transform:translateX(-100%);transition:.4s;display:flex;flex-direction:column;padding-top:60px}
+#sidebar.open{transform:translateX(0)}
+.sidebar-header{padding:1.4rem 1.5rem .8rem;border-bottom:1px solid var(--border)}
+.sidebar-title{font-family:'Bebas Neue';font-size:1rem;letter-spacing:.3em;color:var(--muted)}
+.nav-list{list-style:none;padding:1rem 0;flex:1}
+.nav-item{display:flex;align-items:center;gap:.9rem;padding:.85rem 1.5rem;cursor:pointer;font-size:.9rem;color:var(--muted);border-left:3px solid transparent}
+.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,0.06);border-left-color:#fff}
+#mainContent{min-height:100vh;padding:80px 2.5rem 2.5rem}
+.page-section{display:none}
+.page-section.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-family:'Bebas Neue';font-size:2.8rem;letter-spacing:.1em;margin-bottom:.4rem}
+.section-sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem;margin-bottom:2.5rem}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem}
+.dc-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.dc-val{font-family:'Bebas Neue';font-size:2.2rem}
+.lb-title{font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:.15em;margin-bottom:1rem;color:var(--muted)}
+.device-list{display:flex;flex-direction:column;gap:.7rem;max-width:520px}
+.device-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.device-card:hover{border-color:rgba(255,255,255,0.25)}
+.device-info{display:flex;align-items:center;gap:.9rem}
+.device-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);display:flex;align-items:center;justify-content:center}
+.device-icon svg{width:20px;height:20px;stroke:var(--strong)}
+.device-name{font-weight:600}
+.device-meta{font-size:.75rem;color:var(--muted)}
+.device-status{font-size:.72rem;color:#22c55e;font-weight:600}
+.build-options{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:640px;margin-bottom:2rem}
+.build-opt{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem 1.5rem;text-align:center;cursor:pointer}
+.build-opt:hover{border-color:rgba(255,255,255,0.25)}
+.build-opt.disabled{opacity:.45;pointer-events:none}
+.build-opt svg{width:48px;height:48px;margin:0 auto 1rem;stroke:var(--text);opacity:.7}
+.build-opt h3{font-family:'Bebas Neue';font-size:1.6rem;margin-bottom:.3rem}
+.build-opt p{font-size:.82rem;color:var(--muted)}
+.build-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:480px;display:none}
+.build-form.active{display:block}
+.build-progress{display:none;margin-top:1.5rem}
+.build-progress.active{display:block}
+.progress-bar-wrap{height:8px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;margin-bottom:.6rem}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--strong),#fff);transition:width .3s}
+.progress-text{font-size:.8rem;color:var(--muted);text-align:center}
+.build-done{display:none;text-align:center;margin-top:1.5rem}
+.build-done.active{display:block}
+.download-btn{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.6rem;background:#fff;color:#000;border:none;border-radius:10px;font-family:'Bebas Neue';font-size:1.1rem;cursor:pointer;margin-top:1rem}
+#remotePanel{position:fixed;inset:0;z-index:550;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;padding:1rem}
+#remotePanel.open{display:flex}
+.remote-box{background:#0d0d12;border:1px solid var(--border);border-radius:18px;width:100%;max-width:900px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.remote-header{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.remote-title{font-family:'Bebas Neue';font-size:1.4rem}
+.remote-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.4rem}
+.remote-body{display:flex;flex:1;overflow:hidden}
+.remote-sidebar{width:180px;border-right:1px solid var(--border);padding:1rem 0}
+.remote-nav{padding:.7rem 1.2rem;font-size:.88rem;color:var(--muted);cursor:pointer}
+.remote-nav:hover,.remote-nav.active{color:#fff;background:rgba(255,255,255,0.05)}
+.remote-content{flex:1;padding:1.4rem;overflow-y:auto}
+.remote-section{display:none}
+.remote-section.active{display:block}
+.file-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,0.04);font-size:.9rem}
+.file-actions button{padding:.3rem .7rem;font-size:.75rem;border-radius:6px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);cursor:pointer;margin-left:.4rem}
+.wallpaper-preview,.cam-preview,.screen-preview{width:100%;height:180px;border-radius:12px;background:#1a1a22;border:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.action-btn{padding:.6rem 1.2rem;background:#fff;color:#000;border:none;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;margin-right:.5rem;margin-bottom:.5rem}
+#chatBtn{position:fixed;bottom:2rem;right:2rem;width:60px;height:60px;border-radius:50%;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:200;box-shadow:0 8px 28px rgba(0,0,0,0.55)}
+#chatBtn.open{background:#222}
+#chatBadge{position:absolute;top:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:#ff4d4d;font-size:.62rem;color:#fff;display:none;align-items:center;justify-content:center}
+#chatBadge.show{display:flex}
+#chatPanel{position:fixed;bottom:6rem;right:2rem;width:340px;height:480px;background:#0d0d12;border:1px solid var(--border);border-radius:18px;display:flex;flex-direction:column;z-index:199;opacity:0;pointer-events:none;transform:scale(.9) translateY(20px);transition:.35s}
+#chatPanel.open{opacity:1;pointer-events:all;transform:scale(1) translateY(0)}
+.chat-header{padding:.9rem 1.1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+.chat-title{font-family:'Bebas Neue';font-size:1.1rem}
+.chat-msgs{flex:1;overflow-y:auto;padding:.8rem 1rem;display:flex;flex-direction:column;gap:.5rem}
+.msg-row{display:flex;gap:.5rem}
+.msg-row.mine{flex-direction:row-reverse}
+.msg-bubble{max-width:75%;padding:.5rem .85rem;border-radius:14px;font-size:.88rem}
+.msg-row.mine .msg-bubble{background:#fff;color:#000}
+.msg-row.other .msg-bubble{background:#1a1a22}
+.chat-input-row{display:flex;gap:.5rem;padding:.8rem 1rem;border-top:1px solid var(--border)}
+.chat-input-row input{flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;padding:.6rem .9rem;color:var(--text)}
+.chat-send-btn{width:36px;height:36px;border-radius:50%;background:#fff;border:none;cursor:pointer}
+.placeholder-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:3rem;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="particles"></div>
+<div id="pageOverlay"></div>
+
+<div id="authPage">
+  <div class="logo-wrap"><img src="https://img.freepik.com/premium-vector/drawn-continuous-one-line-computer-mouse-logo-vector-illustration-computer-mouse-black-stroke_952091-3283.jpg"></div>
+  <div class="card">
+    <h1>CRAFTON</h1>
+    <div class="tabs">
+      <button class="tab active" id="tab0" onclick="switchTab(0)">Sign Up</button>
+      <button class="tab" id="tab1" onclick="switchTab(1)">Sign In</button>
+    </div>
+    <div id="signupForm">
+      <div class="field"><label>Username</label><div class="input-wrap"><input type="text" id="su_username" maxlength="10" oninput="document.getElementById('ucount').textContent=this.value.length+'/10'"><span class="char-count" id="ucount">0/10</span></div></div>
+      <div class="field"><label>Password</label><input type="password" id="su_password" oninput="updateStrength()"><div class="strength-wrap"><div class="strength-bar" id="sb1"></div><div class="strength-bar" id="sb2"></div><div class="strength-bar" id="sb3"></div><div class="strength-bar" id="sb4"></div></div></div>
+      <div class="field"><label>Confirm Password</label><input type="password" id="su_confirm"></div>
+      <div class="verify-wrap"><button class="verify-btn" id="verifyBtn" onclick="verifyHuman()">Click to Verify</button><div class="vstatus" id="verifyStatus">Human verification required</div></div>
+      <button class="btn" onclick="signup()">CREATE ACCOUNT</button>
+    </div>
+    <div id="signinForm" class="hidden">
+      <div class="field"><label>Username</label><input type="text" id="si_username"></div>
+      <div class="field"><label>Password</label><input type="password" id="si_password"></div>
+      <button class="btn" onclick="signin()">SIGN IN</button>
+    </div>
+  </div>
+</div>
+
+<div id="dashPage" class="hidden">
+  <div id="topBar">
+    <button id="hamburger" onclick="toggleSidebar()"><span class="hb-line"></span><span class="hb-line"></span><span class="hb-line"></span></button>
+    <div class="topbar-logo">CRAFTON</div>
+    <div style="position:relative">
+      <div id="profileBtn" onclick="document.getElementById('profileDropdown').classList.toggle('open')"></div>
+      <div id="profileDropdown"><div class="dd-item dd-logout" onclick="logout()">Log Out</div></div>
+    </div>
+  </div>
+  <div id="sideBackdrop" onclick="closeSidebar()"></div>
+  <nav id="sidebar">
+    <div class="sidebar-header"><div class="sidebar-title">MENU</div></div>
+    <ul class="nav-list">
+      <li class="nav-item active" onclick="navTo('dashboard',this)">Dashboard</li>
+      <li class="nav-item" onclick="navTo('build',this)">Build</li>
+      <li class="nav-item" onclick="navTo('console',this)">Console</li>
+      <li class="nav-item" onclick="navTo('remote',this)">Remote</li>
+      <li class="nav-item" onclick="navTo('state',this)">State</li>
+    </ul>
+  </nav>
+
+  <div id="mainContent">
+    <div id="sec-dashboard" class="page-section active">
+      <div class="section-title">Dashboard</div>
+      <div class="section-sub">Welcome back, <span id="welcomeName">user</span></div>
+      <div class="dash-grid">
+        <div class="dash-card"><div class="dc-label">Your Hits</div><div class="dc-val" id="myHitsVal" style="color:var(--strong)">0</div></div>
+        <div class="dash-card"><div class="dc-label">Status</div><div class="dc-val" style="color:#22c55e">Online</div></div>
+        <div class="dash-card"><div class="dc-label">Version</div><div class="dc-val">1.0</div></div>
+      </div>
+      <div class="lb-title">CONNECTED DEVICES</div>
+      <div class="device-list" id="deviceList"><div style="color:var(--muted);padding:1rem 0">No devices yet — build an APK</div></div>
+    </div>
+
+    <div id="sec-build" class="page-section">
+      <div class="section-title">Build</div>
+      <div class="section-sub">Configure and build your project</div>
+      <div class="build-options" id="buildOptions">
+        <div class="build-opt" onclick="selectBuild()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+          <h3>APK</h3><p>Android package</p>
+        </div>
+        <div class="build-opt disabled">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <h3>EXE</h3><p>Coming soon</p>
+        </div>
+      </div>
+      <div class="build-form" id="apkForm">
+        <div class="field"><label>App Name</label><input type="text" id="apk_name" placeholder="MyApp"></div>
+        <div class="field"><label>Package Name</label><input type="text" id="apk_package" placeholder="com.yourcompany.appname"></div>
+        <div class="field"><label>APK / ZIP File</label><input type="file" id="apk_zip" accept=".apk,.zip"></div>
+        <button class="btn" id="buildBtn" onclick="startApkBuild()">BUILD APK</button>
+        <div class="build-progress" id="buildProgress">
+          <div class="progress-bar-wrap"><div class="progress-bar" id="progBar"></div></div>
+          <div class="progress-text" id="progText">Preparing...</div>
+        </div>
+        <div class="build-done" id="buildDone">
+          <div style="font-family:'Bebas Neue';font-size:1.4rem;margin-bottom:.5rem">BUILD COMPLETE</div>
+          <div style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Closed-source APK ready</div>
+          <button class="download-btn" onclick="downloadApk()">DOWNLOAD APK</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-console" class="page-section"><div class="section-title">Console</div><div class="placeholder-box">Coming soon</div></div>
+    <div id="sec-remote" class="page-section"><div class="section-title">Remote</div><div class="placeholder-box">Use device cards on Dashboard</div></div>
+    <div id="sec-state" class="page-section"><div class="section-title">State</div><div class="placeholder-box">Coming soon</div></div>
+  </div>
+
+  <button id="chatBtn" onclick="toggleChat()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <div id="chatBadge"></div>
+  </button>
+  <div id="chatPanel">
+    <div class="chat-header"><div class="chat-title">GLOBAL CHAT</div><div style="font-size:.72rem;color:var(--strong)">Live</div></div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Message..." maxlength="300" onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="chat-send-btn" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+</div>
+
+<div id="remotePanel">
+  <div class="remote-box">
+    <div class="remote-header">
+      <div class="remote-title" id="remoteDeviceName">Device</div>
+      <button class="remote-close" onclick="closeRemote()">×</button>
+    </div>
+    <div class="remote-body">
+      <div class="remote-sidebar">
+        <div class="remote-nav active" onclick="remoteNav('files',this)">Files</div>
+        <div class="remote-nav" onclick="remoteNav('wallpaper',this)">Wallpaper</div>
+        <div class="remote-nav" onclick="remoteNav('camera',this)">Camera</div>
+        <div class="remote-nav" onclick="remoteNav('screen',this)">Screen</div>
+      </div>
+      <div class="remote-content">
+        <div class="remote-section active" id="rsec-files"><div id="fileList"></div><button class="action-btn" style="margin-top:1rem" onclick="addFile()">Add File</button></div>
+        <div class="remote-section" id="rsec-wallpaper"><div class="wallpaper-preview" id="wpPreview">Current wallpaper</div><button class="action-btn" onclick="document.getElementById('wpPreview').textContent='Wallpaper changed'">Set New</button></div>
+        <div class="remote-section" id="rsec-camera"><div class="cam-preview" id="camPreview">Camera offline</div><button class="action-btn" onclick="document.getElementById('camPreview').textContent='Photo captured'">Take Picture</button></div>
+        <div class="remote-section" id="rsec-screen"><div class="screen-preview" id="screenView">Waiting...</div><button class="action-btn" onclick="document.getElementById('screenView').textContent='Screen sharing active'">Start Share</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ABLY_KEY = 'vuqWTg.37gGdQ:ls1i6xUxZGMHPkS8tO-dWdovGgUAwZYj0tS0tvFZl80';
+let ablyClient=null, chatChannel=null, chatOpen=false, unread=0;
+let lastApkName='', lastApkPkg='';
+let fakeFiles=['Documents/notes.txt','Pictures/photo1.jpg','DCIM/Camera/IMG_001.jpg'];
+let devices = JSON.parse(localStorage.getItem('crafton_devices')||'[]');
+
+(function(){const c=document.getElementById('particles');for(let i=0;i<40;i++){const p=document.createElement('div');p.className='pt';const s=Math.random()*2+1;p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${Math.random()*30+20}s;--dx:${(Math.random()-.5)*400}px;--dy:${(Math.random()-.5)*400}px`;c.appendChild(p);}})();
+
+function getAccounts(){return JSON.parse(localStorage.getItem('crafton_accounts')||'{}')}
+function saveAccounts(a){localStorage.setItem('crafton_accounts',JSON.stringify(a))}
+function getUser(){return localStorage.getItem('crafton_user')}
+function saveDevices(){localStorage.setItem('crafton_devices',JSON.stringify(devices))}
+
+(function(){const u=getUser();if(u){document.getElementById('authPage').classList.add('hidden');document.getElementById('dashPage').classList.remove('hidden');refresh(u);renderDevices();initAbly(u);}})();
+
+function initAbly(u){
+  try{ablyClient=new Ably.Realtime({key:ABLY_KEY,clientId:u,echoMessages:true});
+  chatChannel=ablyClient.channels.get('crafton-global-chat');
+  chatChannel.subscribe('msg',m=>{const d=m.data;if(d.sender!==u&&!chatOpen){unread++;const b=document.getElementById('chatBadge');b.textContent=unread>9?'9+':unread;b.classList.add('show');}appendMsg(d,d.sender===u);});
+  }catch(e){}
+}
+function sendMsg(){const t=document.getElementById('chatInput').value.trim();if(!t||!chatChannel)return;chatChannel.publish('msg',{sender:getUser(),text:t,time:Date.now()});document.getElementById('chatInput').value='';}
+function appendMsg(d,mine){const box=document.getElementById('chatMsgs');const r=document.createElement('div');r.className='msg-row '+(mine?'mine':'other');r.innerHTML=`<div class="msg-bubble">${d.text.replace(/</g,'&lt;')}</div>`;box.appendChild(r);box.scrollTop=box.scrollHeight;}
+function toggleChat(){chatOpen=!chatOpen;document.getElementById('chatBtn').classList.toggle('open',chatOpen);document.getElementById('chatPanel').classList.toggle('open',chatOpen);if(chatOpen){unread=0;document.getElementById('chatBadge').classList.remove('show');}}
+
+function refresh(u){document.getElementById('welcomeName').textContent=u;document.getElementById('profileBtn').innerHTML=`<span style="font-family:'Bebas Neue'">${u[0].toUpperCase()}</span>`;const a=getAccounts()[u]||{};document.getElementById('myHitsVal').textContent=a.hits||0;}
+
+function selectBuild(){document.getElementById('buildOptions').style.display='none';document.getElementById('apkForm').classList.add('active');}
+
+function startApkBuild(){
+  const name=document.getElementById('apk_name').value.trim();
+  const pkg=document.getElementById('apk_package').value.trim();
+  const file=document.getElementById('apk_zip').files[0];
+  if(!name||!pkg||!file)return alert('Fill all fields');
+
+  lastApkName=name; lastApkPkg=pkg;
+  document.getElementById('buildBtn').style.display='none';
+  document.getElementById('buildProgress').classList.add('active');
+  document.getElementById('buildDone').classList.remove('active');
+
+  const steps=[
+    {p:15,t:'Reading APK...'},
+    {p:35,t:'Injecting payload...'},
+    {p:55,t:'Rebuilding resources...'},
+    {p:75,t:'Signing APK...'},
+    {p:90,t:'Optimizing...'},
+    {p:100,t:'Build complete'}
+  ];
+  let i=0;
+  const bar=document.getElementById('progBar');
+  const txt=document.getElementById('progText');
+  const iv=setInterval(()=>{
+    if(i>=steps.length){
+      clearInterval(iv);
+      document.getElementById('buildProgress').classList.remove('active');
+      document.getElementById('buildDone').classList.add('active');
+
+      // add device + hit
+      const models=['Samsung Galaxy S24','Pixel 8','OnePlus 12','Xiaomi 14','Nothing Phone'];
+      const model=models[Math.floor(Math.random()*models.length)];
+      const id='dev_'+Date.now();
+      devices.push({id,name:name+' · '+model,model,package:pkg,owner:getUser()});
+      saveDevices();
+      renderDevices();
+
+      const acc=getAccounts();const u=getUser();
+      if(acc[u]){acc[u].hits=(acc[u].hits||0)+1;saveAccounts(acc);refresh(u);}
+      return;
+    }
+    bar.style.width=steps[i].p+'%';
+    txt.textContent=steps[i].t;
+    i++;
+  },650);
+}
+
+function downloadApk(){
+  // creates a tiny dummy APK so the download works on GitHub Pages
+  const content = 'PK\x03\x04CRAFTON_CLOSED_SOURCE\nApp: '+lastApkName+'\nPackage: '+lastApkPkg;
+  const blob = new Blob([content], {type:'application/vnd.android.package-archive'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (lastApkName||'app')+'.apk';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function renderDevices(){
+  const box=document.getElementById('deviceList');
+  const mine=devices.filter(d=>d.owner===getUser());
+  if(!mine.length){box.innerHTML='<div style="color:var(--muted);padding:1rem 0">No devices yet — build an APK</div>';return;}
+  box.innerHTML=mine.map(d=>`<div class="device-card" onclick="openRemote('${d.id}','${d.name}')">
+    <div class="device-info"><div class="device-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></div>
+    <div><div class="device-name">${d.name}</div><div class="device-meta">${d.model||'Android'}</div></div></div>
+    <div class="device-status">ONLINE</div></div>`).join('');
+}
+
+function openRemote(id,name){document.getElementById('remoteDeviceName').textContent=name;document.getElementById('remotePanel').classList.add('open');renderFiles();}
+function closeRemote(){document.getElementById('remotePanel').classList.remove('open');}
+function remoteNav(s,el){document.querySelectorAll('.remote-nav').forEach(n=>n.classList.remove('active'));el.classList.add('active');document.querySelectorAll('.remote-section').forEach(x=>x.classList.remove('active'));document.getElementById('rsec-'+s).classList.add('active');}
+function renderFiles(){document.getElementById('fileList').innerHTML=fakeFiles.map((f,i)=>`<div class="file-row"><span>${f}</span><div class="file-actions"><button onclick="fakeFiles.splice(${i},1);renderFiles()">Del</button></div></div>`).join('');}
+function addFile(){const n=prompt('path');if(n){fakeFiles.push(n);renderFiles();}}
+
+function switchTab(n){document.getElementById('tab0').classList.toggle('active',n===0);document.getElementById('tab1').classList.toggle('active',n===1);document.getElementById('signupForm').classList.toggle('hidden',n!==0);document.getElementById('signinForm').classList.toggle('hidden',n!==1);}
+function updateStrength(){const p=document.getElementById('su_password').value;let s=0;if(p.length>=6)s++;if(/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^a-zA-Z0-9]/.test(p))s++;for(let i=1;i<=4;i++)document.getElementById('sb'+i).classList.toggle('active',i<=s);}
+let verified=false;
+async function verifyHuman(){const b=document.getElementById('verifyBtn');b.disabled=true;b.innerHTML='<span class="spinner"></span>Verifying...';await new Promise(r=>setTimeout(r,900));verified=true;b.innerHTML='Verified';b.classList.add('verified');document.getElementById('verifyStatus').textContent='Human verified';document.getElementById('verifyStatus').style.color='#22c55e';}
+function signup(){if(!verified)return alert('Verify first');const u=document.getElementById('su_username').value.trim();const p=document.getElementById('su_password').value;if(!u||p.length<6)return alert('Invalid');const a=getAccounts();if(a[u])return alert('Taken');a[u]={password:p,hits:0};saveAccounts(a);localStorage.setItem('crafton_user',u);goDash(u);}
+function signin(){const u=document.getElementById('si_username').value.trim();const p=document.getElementById('si_password').value;const d=getAccounts()[u];if(!d||d.password!==p)return alert('Wrong');localStorage.setItem('crafton_user',u);goDash(u);}
+function goDash(u){document.getElementById('pageOverlay').classList.add('show');setTimeout(()=>{document.getElementById('authPage').classList.add('hidden');document.getElementById('dashPage').classList.remove('hidden');refresh(u);renderDevices();initAbly(u);document.getElementById('pageOverlay').classList.remove('show');},300);}
+function logout(){localStorage.removeItem('crafton_user');location.reload();}
+let side=false;
+function toggleSidebar(){side=!side;document.getElementById('sidebar').classList.toggle('open',side);document.getElementById('hamburger').classList.toggle('open',side);document.getElementById('sideBackdrop').classList.toggle('show',side);}
+function closeSidebar(){side=false;document.getElementById('sidebar').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.getElementById('sideBackdrop').classList.remove('show');}
+function navTo(s,el){document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.getElementById('sec-'+s).classList.add('active');if(s==='build'){document.getElementById('buildOptions').style.display='grid';document.getElementById('apkForm').classList.remove('active');document.getElementById('buildDone').classList.remove('active');document.getElementById('buildBtn').style.display='block';}closeSidebar();}
+</script>
+</body>
+</html>
